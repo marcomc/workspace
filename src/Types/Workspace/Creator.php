@@ -23,7 +23,8 @@ class Creator
         $workspace[] = "  description: generated local workspace for {$name}.";
 
         if (null !== $harness) {
-            $workspace[] = "  harness: $harness";
+            $workspace[] = "  harnessLayers:";
+            $workspace[] = "    - $harness";
         }
 
         $workspace[] = "";

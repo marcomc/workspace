@@ -40,19 +40,19 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
     {
         if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
             /** @var Definition $definition */
-            $this->workspace->name        = $definition->name;
-            $this->workspace->description = $definition->description;
-            $this->workspace->path        = $definition->path;
-            $this->workspace->harnessName = $definition->harnessName;
-            $this->workspace->overlay     = $definition->overlay;
-            $this->workspace->scope       = $definition->scope;
+            $this->workspace->name          = $definition->name;
+            $this->workspace->description   = $definition->description;
+            $this->workspace->path          = $definition->path;
+            $this->workspace->harnessLayers = $definition->harnessLayers;
+            $this->workspace->overlay       = $definition->overlay;
+            $this->workspace->scope         = $definition->scope;
         } else {
-            $this->workspace->name        = basename($environment->getWorkspacePath());
-            $this->workspace->description = '';
-            $this->workspace->path        = $environment->getWorkspacePath();
-            $this->workspace->harnessName = null;
-            $this->workspace->overlay     = null;
-            $this->workspace->scope       = WorkspaceDefinition::SCOPE_WORKSPACE;
+            $this->workspace->name          = basename($environment->getWorkspacePath());
+            $this->workspace->description   = '';
+            $this->workspace->path          = $environment->getWorkspacePath();
+            $this->workspace->harnessLayers = [];
+            $this->workspace->overlay       = null;
+            $this->workspace->scope         = WorkspaceDefinition::SCOPE_WORKSPACE;
         }
 
         $this->phpExecutor->setGlobal('ws', $this->workspace);
@@ -62,7 +62,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 'workspace' => [
                     'name'        => $this->workspace->name,
                     'description' => $this->workspace->description,
-                    'harness'     => $this->workspace->harnessName
+                    'harnessLayers' => $this->workspace->harnessLayers
                 ],
                 'namespace' => $this->workspace->name
             ],
