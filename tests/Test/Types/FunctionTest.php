@@ -2,16 +2,15 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class FunctionTest extends IntegrationTestCase
 {
     /** @test */
-    public function bash_can_be_used_as_an_interpreter_for_a_function()
+    public function bash_can_be_used_as_an_interpreter_for_a_function(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 function('add', [v1, v2]): |
   #!bash
   ="$((v1+v2))"
@@ -26,9 +25,10 @@ EOD
     }
 
     /** @test */
-    public function php_can_be_used_as_an_interpreter_for_a_function()
+    public function php_can_be_used_as_an_interpreter_for_a_function(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 function('add', [v1, v2]): |
   #!php
   =$v1+$v2;
@@ -43,9 +43,10 @@ EOD
     }
 
     /** @test */
-    public function bash_function_can_make_use_of_environment_variables()
+    public function bash_function_can_make_use_of_environment_variables(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -63,9 +64,10 @@ EOD
     }
 
     /** @test */
-    public function php_function_can_make_use_of_environment_variables()
+    public function php_function_can_make_use_of_environment_variables(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -83,9 +85,10 @@ EOD
     }
 
     /** @test */
-    public function functions_are_available_within_attribute_expressions()
+    public function functions_are_available_within_attribute_expressions(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('answer'): = add(2, 2)
 
 function('add', [v1, v2]): |
@@ -103,9 +106,10 @@ EOD
     }
 
     /** @test */
-    public function functions_are_able_to_return_non_scalar_types()
+    public function functions_are_able_to_return_non_scalar_types(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 function('array', [v1, v2]): |
   #!php
   = [$v1, $v2];

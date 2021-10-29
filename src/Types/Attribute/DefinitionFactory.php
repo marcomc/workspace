@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = [
+    public const TYPES = [
 
         'attribute.default',
         'attributes.default',
@@ -83,18 +83,18 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata)
+    private function parseMetaData(array &$values, $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration)
+    private function parseDeclaration(array &$values, $declaration): void
     {
         $values['key'] = (strpos($values['type'], 'attributes') === 0) ? '~' : substr($declaration, strlen($values['type']) + 2, -2);
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
         $values['value'] = $body;
     }

@@ -20,21 +20,21 @@ class Loader
     /** @var string */
     private $harnessPath;
 
-    const PATTERN_REPLACE_ENV_VARS = "/\=\{env\(['\"]{1}(?P<name>.*)',[\s]*'(?P<default>.*)['\"]{1}\)\}/";
+    public const PATTERN_REPLACE_ENV_VARS = "/\=\{env\(['\"]{1}(?P<name>.*)',[\s]*'(?P<default>.*)['\"]{1}\)\}/";
 
     public function __construct(Collection $definitions)
     {
         $this->definitions = $definitions;
     }
 
-    public function addDefinitionFactory(Factory $factory)
+    public function addDefinitionFactory(Factory $factory): void
     {
         foreach ($factory::getTypes() as $type) {
             $this->factories[$type] = $factory;
         }
     }
 
-    public function load(string $file)
+    public function load(string $file): void
     {
         $file = $this->expandEnvVars($file);
 
@@ -42,9 +42,9 @@ class Loader
 
         foreach ($files as $file) {
             foreach ($this->getDeclarationsFromFile($file) as $data) {
-
                 if ($data['type'] === 'import') {
                     $this->loadFromImportDeclaration($data);
+
                     continue;
                 }
 
@@ -56,11 +56,10 @@ class Loader
     private function getDeclarationsFromFile($file): Generator
     {
         $directory = dirname($file);
-        $scope     = $this->resolvePathScope($directory);
+        $scope = $this->resolvePathScope($directory);
         $documents = preg_split('/\R---\R/', file_get_contents($file));
 
         foreach ($documents as $document) {
-
             $declarations = Yaml::parse($document);
 
             if (!is_array($declarations)) {
@@ -68,7 +67,6 @@ class Loader
             }
 
             foreach ($declarations as $declaration => $body) {
-
                 $data = [
                     'type' => $this->getTypeFromDeclaration($declaration),
                     'metadata' => [
@@ -89,22 +87,22 @@ class Loader
         return strtok($declaration, '(');
     }
 
-    private function loadFromImportDeclaration(array $data)
+    private function loadFromImportDeclaration(array $data): void
     {
-        $cwd   = $data['metadata']['path'];
-        $files = is_array($data['body'])?$data['body']:[$data['body']];
+        $cwd = $data['metadata']['path'];
+        $files = is_array($data['body']) ? $data['body'] : [$data['body']];
 
         foreach ($files as $relativeFile) {
             $this->load($cwd.DIRECTORY_SEPARATOR.$relativeFile);
         }
     }
 
-    public function setWorkspacePath(string $workspacePath)
+    public function setWorkspacePath(string $workspacePath): void
     {
         $this->workspacePath = $workspacePath;
     }
 
-    public function setHarnessPath(string $harnessPath)
+    public function setHarnessPath(string $harnessPath): void
     {
         $this->harnessPath = $harnessPath;
     }
@@ -138,6 +136,6 @@ class Loader
 
     private function replaceEnvVar(array $match)
     {
-        return getenv($match['name'])?:$match['default'];
+        return getenv($match['name']) ?: $match['default'];
     }
 }

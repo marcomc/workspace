@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['before', 'on', 'after'];
+    public const TYPES = ['before', 'on', 'after'];
 
     /*
      * example
@@ -65,32 +65,35 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, array $metadata)
+    private function parseMetaData(array &$values, array $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, string $declaration)
+    private function parseDeclaration(array &$values, string $declaration): void
     {
         switch ($values['type']) {
             case 'before':
                 $event = 'before.'.substr($declaration, 8, -2);
+
                 break;
 
             case 'after':
                 $event = 'after.'.substr($declaration, 7, -2);
+
                 break;
 
             default:
                 $event = substr($declaration, 4, -2);
+
                 break;
         }
 
         $values['event'] = $event;
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
         if (is_string($body)) {
             $body = [
@@ -98,7 +101,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
             ];
         }
 
-        $values['env']  = $body['env']??[];
+        $values['env'] = $body['env'] ?? [];
         $values['exec'] = $body['exec'];
     }
 

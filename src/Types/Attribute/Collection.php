@@ -42,11 +42,12 @@ class Collection implements ArrayAccess
 
         if ($this->isExpression($value)) {
             $this->evaluate($value);
+
             return $value;
         }
 
         if (is_array($value)) {
-            array_walk_recursive($value, function (&$value) {
+            array_walk_recursive($value, function (&$value): void {
                 if ($this->isExpression($value)) {
                     $this->evaluate($value);
                 }
@@ -91,7 +92,6 @@ class Collection implements ArrayAccess
         krsort($segments);
 
         while (($segment = array_pop($segments)) !== null) {
-
             if (!array_key_exists($segment, $array)) {
                 return false;
             }
@@ -107,19 +107,19 @@ class Collection implements ArrayAccess
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         foreach ($this->attributes as &$attributes) {
             Arr::forget($attributes, $offset);
         }
     }
 
-    private function buildAttributeCache()
+    private function buildAttributeCache(): void
     {
         ksort($this->attributes);
         $this->cache = [];

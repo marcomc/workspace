@@ -18,7 +18,7 @@ class Filesystem extends Twig_Loader_Filesystem
 
     public function getSourceContext($name)
     {
-        $path    = $this->findTemplate($name);
+        $path = $this->findTemplate($name);
         $content = file_get_contents($path);
 
         $content = str_replace("@('", "attr('", $content);

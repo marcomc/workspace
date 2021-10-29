@@ -2,17 +2,11 @@
 
 namespace my127\Workspace\Tests\Util;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
-use SplFileInfo;
-use my127\Workspace\Utility\Filesystem;
 
 class WorkspaceTest extends TestCase
 {
-    const EXAMPLE_CONTENT = 'barfoo';
+    public const EXAMPLE_CONTENT = 'barfoo';
 
     /**
      * @test

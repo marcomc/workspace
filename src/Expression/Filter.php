@@ -6,7 +6,7 @@ use my127\Workspace\Interpreter\Filter as InterpreterFilter;
 
 class Filter implements InterpreterFilter
 {
-    const NAME = '=';
+    public const NAME = '=';
 
     private $expression;
 
@@ -23,7 +23,6 @@ class Filter implements InterpreterFilter
     public function apply(string $script): string
     {
         foreach ($this->findAllExpressionsInString($script) as $expression) {
-
             $script = str_replace(
                 $expression,
                 $this->expression->evaluate(trim(substr($expression, 2, -1))),
@@ -39,9 +38,8 @@ class Filter implements InterpreterFilter
     {
         $expressions = [];
 
-        while (($end = $start = strpos($script, '={', $end??0)) !== false) {
-
-            while ($script[($end = strpos($script, '}', $end))-1] == '\\') {
+        while (($end = $start = strpos($script, '={', $end ?? 0)) !== false) {
+            while ($script[($end = strpos($script, '}', $end)) - 1] == '\\') {
                 ++$end;
             }
 

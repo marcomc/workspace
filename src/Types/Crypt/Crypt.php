@@ -34,7 +34,7 @@ class Crypt
 
     public function decrypt($encrypted)
     {
-        list ($key, $nonce, $ciphertext) = unserialize(base64_decode($encrypted));
+        list($key, $nonce, $ciphertext) = unserialize(base64_decode($encrypted));
 
         if (($message = sodium_crypto_secretbox_open($ciphertext, $nonce, $this->getKey($key))) !== false) {
             return $message;

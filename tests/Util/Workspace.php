@@ -48,7 +48,7 @@ class Workspace
 
     public function loadSample(string $name): void
     {
-        $path = sprintf('%s/../samples/%s',  __DIR__, $name);
+        $path = sprintf('%s/../samples/%s', __DIR__, $name);
 
         if (!is_dir($path)) {
             throw new RuntimeException(sprintf(
@@ -122,6 +122,7 @@ class Workspace
 
             if (in_array($splFileInfo->getType(), ['socket', 'file', 'link'])) {
                 unlink($path);
+
                 return;
             }
         }

@@ -28,7 +28,7 @@ class EnvironmentBuilder
         $this->functions[$name] = new Twig_Function($name, $function);
     }
 
-    public function addGlobal(string $name, $value)
+    public function addGlobal(string $name, $value): void
     {
         $this->globals[$name] = $value;
     }
@@ -37,7 +37,7 @@ class EnvironmentBuilder
     {
         $directory = $this->path->getRealPath($path);
 
-        $loader      = new Filesystem([$directory], $directory);
+        $loader = new Filesystem([$directory], $directory);
         $environment = new Twig_Environment($loader, [
             'autoescape' => false
         ]);

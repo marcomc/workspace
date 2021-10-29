@@ -20,6 +20,7 @@ class Executor implements InterpreterExecutor
         $process = proc_open($this->buildCommand($script, $args, $cwd, $env), $descriptorSpec, $pipes);
 
         $status = 255;
+
         if (is_resource($process)) {
             $status = proc_close($process);
         }
@@ -53,7 +54,7 @@ class Executor implements InterpreterExecutor
 
     private function buildCommand(string $script, array $args, ?string $cwd, array $env): string
     {
-        $home   = home();
+        $home = home();
         $header = "#!/bin/bash\n"
                  .". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
@@ -65,7 +66,7 @@ class Executor implements InterpreterExecutor
             $header .= 'export '.$key.'="'.addslashes($value).'"'."\n";
         }
 
-        $header .= 'cd '.$cwd??getcwd();
+        $header .= 'cd '.$cwd ?? getcwd();
 
         return 'bash -e -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }

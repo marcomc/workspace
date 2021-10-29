@@ -7,7 +7,7 @@ use ArrayAccess;
 class Arr
 {
     // https://github.com/illuminate/support/blob/master/Arr.php
-    public static function accessible($value) : bool
+    public static function accessible($value): bool
     {
         return is_array($value) || $value instanceof ArrayAccess;
     }
@@ -48,28 +48,34 @@ class Arr
         if ($array instanceof ArrayAccess) {
             return $array->offsetExists($key);
         }
+
         return array_key_exists($key, $array);
     }
 
     // https://github.com/illuminate/support/blob/master/Arr.php
-    public static function forget(&$array, $keys)
+    public static function forget(&$array, $keys): void
     {
         $original = &$array;
         $keys = (array) $keys;
+
         if (count($keys) === 0) {
             return;
         }
+
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
             if (static::exists($array, $key)) {
                 unset($array[$key]);
+
                 continue;
             }
             $parts = explode('.', $key);
             // clean up before each pass
             $array = &$original;
+
             while (count($parts) > 1) {
                 $part = array_shift($parts);
+
                 if (isset($array[$part]) && is_array($array[$part])) {
                     $array = &$array[$part];
                 } else {
@@ -87,6 +93,7 @@ class Arr
             return $array = $value;
         }
         $keys = explode('.', $key);
+
         while (count($keys) > 1) {
             $key = array_shift($keys);
             // If the key doesn't exist at this depth, we will just create an empty array
@@ -98,6 +105,7 @@ class Arr
             $array = &$array[$key];
         }
         $array[array_shift($keys)] = $value;
+
         return $array;
     }
 }

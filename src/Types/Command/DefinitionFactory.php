@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['command'];
+    public const TYPES = ['command'];
 
     /*
      * example
@@ -65,24 +65,24 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, array $metadata)
+    private function parseMetaData(array &$values, array $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, string $declaration)
+    private function parseDeclaration(array &$values, string $declaration): void
     {
         $parts = explode(',', substr($declaration, 8, -1));
 
-        $usage   = substr(trim($parts[0]), 1, -1);
-        $section = substr(trim($parts[1]??$parts[0]), 1, -1);
+        $usage = substr(trim($parts[0]), 1, -1);
+        $section = substr(trim($parts[1] ?? $parts[0]), 1, -1);
 
-        $values['usage']   = $usage;
+        $values['usage'] = $usage;
         $values['section'] = $section;
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
         if (is_string($body)) {
             $body = [
@@ -90,7 +90,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
             ];
         }
 
-        $values['env']  = $body['env']??[];
+        $values['env'] = $body['env'] ?? [];
         $values['exec'] = $body['exec'];
     }
 

@@ -21,13 +21,13 @@ class Builder implements EnvironmentBuilder
 
     public function __construct(Application $application, Crypt $crypt, Expression $expressionLanguage, TwigEnvironmentBuilder $twigBuilder)
     {
-        $this->crypt              = $crypt;
+        $this->crypt = $crypt;
         $this->expressionLanguage = $expressionLanguage;
-        $this->twigBuilder        = $twigBuilder;
-        $this->application        = $application;
+        $this->twigBuilder = $twigBuilder;
+        $this->application = $application;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         foreach ($definitions->findByType(KeyDefinition::TYPE) as $definition) {
             /** @var KeyDefinition $definition */
@@ -39,7 +39,6 @@ class Builder implements EnvironmentBuilder
         }
 
         foreach (getenv() as $key => $value) {
-
             if (strpos($key, 'MY127WS_KEY_') !== 0) {
                 continue;
             }
@@ -47,36 +46,38 @@ class Builder implements EnvironmentBuilder
             $this->crypt->addKey(new Key(strtolower(substr($key, strrpos($key, '_'))), $value));
         }
 
-        $this->expressionLanguage->addFunction(new ExpressionFunction('decrypt',
-            function () {
+        $this->expressionLanguage->addFunction(
+            new ExpressionFunction(
+                'decrypt',
+                function (): void {
                 throw new Exception("Compilation of the 'decrypt' function within Types\Crypt\Builder is not supported.");
             },
-            function ($arguments, $encrypted) {
+                function ($arguments, $encrypted) {
                 return $this->crypt->decrypt($encrypted);
-            })
+            }
+            )
         );
 
-        $this->twigBuilder->addFunction('decrypt', function($encrypted) {
+        $this->twigBuilder->addFunction('decrypt', function ($encrypted) {
             return $this->crypt->decrypt($encrypted);
         });
 
         if ($definitions->hasType(KeyDefinition::TYPE)) {
-
             $this->application->section('secret encrypt')
                 ->usage('secret encrypt <message> [<key>]')
-                ->action(function (Input $input) {
+                ->action(function (Input $input): void {
                     echo $this->crypt->encrypt($input->getArgument('message'), $input->getArgument('key') ?? 'default') . "\n";
                 });
 
             $this->application->section('secret decrypt')
                 ->usage('secret decrypt <encrypted>')
-                ->action(function (Input $input) {
+                ->action(function (Input $input): void {
                     echo $this->crypt->decrypt($input->getArgument('encrypted'))."\n";
                 });
         }
 
         $this->application->section('secret generate-random-key')
-            ->action(function (Input $input) {
+            ->action(function (Input $input): void {
                 echo (new Key('random'))->getKeyAsHex()."\n";
             });
     }

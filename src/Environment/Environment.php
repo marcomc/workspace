@@ -22,10 +22,10 @@ class Environment
 
     public function __construct(DefinitionLoader $loader, DefinitionCollection $definitions, BuilderCollection $builders, AttributeCollection $attributes)
     {
-        $this->loader      = $loader;
+        $this->loader = $loader;
         $this->definitions = $definitions;
-        $this->builders    = $builders;
-        $this->attributes  = $attributes;
+        $this->builders = $builders;
+        $this->attributes = $attributes;
     }
 
     public function getWorkspacePath(): string
@@ -39,7 +39,6 @@ class Environment
     }
 
     /**
-     * @param string $key
      *
      * @return array|mixed|null
      */
@@ -48,7 +47,7 @@ class Environment
         return $this->attributes->get($key);
     }
 
-    public function build()
+    public function build(): void
     {
         $this->prepareEnvironmentForBuild();
 
@@ -60,12 +59,12 @@ class Environment
         $this->attributes->set('host.os', strtolower(PHP_OS_FAMILY));
     }
 
-    private function prepareEnvironmentForBuild()
+    private function prepareEnvironmentForBuild(): void
     {
         $this->loadWorkspaceDefinitions();
     }
 
-    private function loadWorkspaceDefinitions()
+    private function loadWorkspaceDefinitions(): void
     {
         $this->loader->setWorkspacePath($this->workspacePath = $this->findWorkspaceDirectory());
         $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath.'/.my127ws');

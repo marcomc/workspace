@@ -9,7 +9,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['harness'];
+    public const TYPES = ['harness'];
 
     /** @var bool */
     private $isDefined = false;
@@ -53,21 +53,21 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata)
+    private function parseMetaData(array &$values, $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration)
+    private function parseDeclaration(array &$values, $declaration): void
     {
         $values['name'] = substr($declaration, 9, -2);
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
-        $values['description'] = $body['description']??null;
-        $values['require']     = $body['require']??null;
+        $values['description'] = $body['description'] ?? null;
+        $values['require'] = $body['require'] ?? null;
     }
 
     public static function getTypes(): array

@@ -2,17 +2,15 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class CryptTest extends IntegrationTestCase
 {
     /** @test */
-    public function secrets_can_be_encrypted_and_decrypted_given_a_key()
+    public function secrets_can_be_encrypted_and_decrypted_given_a_key(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 EOD
         );
@@ -25,9 +23,10 @@ EOD
     }
 
     /** @test */
-    public function secrets_as_part_of_an_expression_can_be_decrypted()
+    public function secrets_as_part_of_an_expression_can_be_decrypted(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 
@@ -44,9 +43,10 @@ EOD
     }
 
     /** @test */
-    function default_key_can_be_specified_as_an_environment_variable()
+    public function default_key_can_be_specified_as_an_environment_variable(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 
 attribute('message'): = decrypt('YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoi98rFejkefPnZG1CjzGeFyvSAMgafKv2TIjtpOjI7czoyNzoiSwcG2YiM3vV8CdZXgxDM2q+ZmRmPRNyz7OgcIjt9')
 
